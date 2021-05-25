@@ -4,6 +4,12 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <h1 class="text-2xl">{{$sensorSystem->pi_id}}</h1>
+                    <form action="{{route('SensorSystems.delete', $sensorSystem->id)}}" method="POST">
+                        @csrf
+                        @method("DELETE")
+
+                        <button>Delete</button>
+                    </form>
 
                     <table class="w-full text-left">
                         <th>Pi Identifier</th>
@@ -33,6 +39,12 @@
 
                     @if ($sensorSystem->APIData)
                         <p class="text-2xl pt-2">API Data</p>
+                        <form action="{{route('APIData.delete', $sensorSystem->APIData->id)}}" method="POST">
+                            @csrf
+                            @method("DELETE")
+
+                            <button>Delete</button>
+                        </form>
 
                         <table class="w-full text-left">
                             <th>UV</th>
@@ -46,6 +58,12 @@
 
                     @else
                         <p class="p-2">No API found!</p>
+
+                        <form class="p-2" action="{{route('APIData.store', $sensorSystem->id)}}" method="POST">
+                            @csrf
+
+                            <button>Create</button>
+                        </form>
 
                     @endif
 

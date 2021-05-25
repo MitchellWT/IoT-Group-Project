@@ -18,9 +18,9 @@ class CreateSensorDatasTable extends Migration
             $table->foreignId('sensor_system_id')
                 ->constrained('sensor_systems')
                 ->onDelete('cascade');
-            $table->float('temperature', 8, 2);
-            $table->float('humidity', 8, 2);
-            $table->float('soil_moisture', 8, 2);
+            $table->float('temperature', 8, 2)->nullable();
+            $table->float('humidity', 8, 2)->nullable();
+            $table->float('soil_moisture', 8, 2)->nullable();
             $table->timestamps();
         });
     }

@@ -40,13 +40,15 @@ class SensorSystemController extends Controller
         return view('info', compact('dataArr', 'sensorID'));
     }
 
-    /* Sensor systems can not be created
-     * in app. They are created and stored when
-     * they are registered on AWS IoT Core.
+    /* Sensor systems form for
+     * creating system.
      */
+    public function create()
+    {
+        return view('SensorSystems.create');
+    }
 
     /* Stores a newly created sensor system.
-     * This data is received through the API.
      */
     public function store(Request $request)
     {
@@ -54,27 +56,16 @@ class SensorSystemController extends Controller
 
         SensorSystem::create($validatedRequest);
 
-        return response(201);
+        return redirect()->route('SensorSystems.index');
     }
 
-    /* Sensor systems can not be edited
-     * in app. Instead they are updated
-     * using the API, which is triggered
-     * based on MQTT messages.
+    /* Deletes sensor system.
      */
-
-    /* Updates a sensor systems with the
-     * newly provided info. This data is
-     * recieved through the API.
-     */
-    public function update(Request $request)
+    public function delete(SensorSystem $sensorSystem)
     {
-        $validatedRequest = $this->validateSensorSystem($request);
-        $sensorSystem = SensorSystem::firstWhere('pi_id', $validatedRequest['pi_id']);
+        SensorSystem::destroy($sensorSystem->id);
 
-        $sensorSystem->update($validatedRequest);
-
-        return response(201);
+        return redirect()->route('SensorSystems.index');
     }
 
     public function validateSensorSystem(Request $request)

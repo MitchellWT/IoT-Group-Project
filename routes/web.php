@@ -33,9 +33,29 @@ Route::get('/sensorsystems', [SensorSystemController::class, 'index'])
 ->middleware(['auth'])
 ->name('SensorSystems.index');
 
+Route::get('/sensorsystems/create', [SensorSystemController::class, 'create'])
+->middleware(['auth'])
+->name('SensorSystems.create');
+
+Route::post('/sensorsystems/store', [SensorSystemController::class, 'store'])
+->middleware(['auth'])
+->name('SensorSystems.store');
+
 Route::get('/sensorsystems/{sensorSystem}/show', [SensorSystemController::class, 'show'])
 ->middleware(['auth'])
 ->name('SensorSystems.show');
+
+Route::delete('/sensorsystems/{sensorSystem}/delete', [SensorSystemController::class, 'delete'])
+->middleware(['auth'])
+->name('SensorSystems.delete');
+
+Route::post('/sensorsystems/{sensorSystem}/apidata/store', [APIDataController::class, 'store'])
+->middleware(['auth'])
+->name('APIData.store');
+
+Route::delete('/apidata/{APIData}/delete', [APIDataController::class, 'delete'])
+->middleware(['auth'])
+->name('APIData.delete');
 
 Route::get('/awsiotrules', [AWSIoTRuleController::class, 'index'])
 ->middleware(['auth'])

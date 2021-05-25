@@ -20,13 +20,3 @@ use App\Http\Controllers\APIDataController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::middleware('auth:api')->post('/sensorsystem/store', [SensorSystemController::class, 'store']);
-
-Route::middleware('auth:api')->post('/sensorsystem/update', [SensorSystemController::class, 'update']);
-
-Route::middleware('auth:api')->post('/sensordata/store', [SensorDataController::class, 'store']);
-
-Route::middleware('auth:api')->post('/apidata/store', [APIDataController::class, 'store']);
-
-Route::middleware('auth:api')->post('/apidata/update', [APIDataController::class, 'update']);

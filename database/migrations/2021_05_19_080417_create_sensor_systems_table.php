@@ -17,10 +17,10 @@ class CreateSensorSystemsTable extends Migration
             $table->id();
             $table->string('pi_id')->unique();
             $table->string('ip_address');
-            $table->boolean('irrigation');
-            $table->float('shutter', 8, 2);
-            $table->float('latitude' ,8, 2);
-            $table->float('longitude', 8, 2);
+            $table->boolean('irrigation')->nullable();
+            $table->float('shutter', 8, 2)->nullable();
+            $table->float('latitude' ,8, 2)->nullable();
+            $table->float('longitude', 8, 2)->nullable();
             $table->timestamps();
         });
     }

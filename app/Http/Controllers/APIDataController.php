@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\APIData;
 use App\Models\SensorSystem;
+use Carbon\Carbon;
 
 class APIDataController extends Controller
 {
@@ -13,57 +14,34 @@ class APIDataController extends Controller
      * on location.
      */
 
-    /* API data can not be created
-     * in app. They are created and stored when
-     * they are registered on AWS IoT Core.
+    /* Stores a default API data.
+     * This data can then be updated using the sensor
+     * systems.
      */
-
-    /* Stores a newly created API data.
-     * This data is received through the API.
-     */
-    public function store(Request $request)
+    public function store(SensorSystem $sensorSystem)
     {
-        $validatedRequest = $this->validateAPIData($request);
-        $sensorSystem = SensorSystem::firstWhere('pi_id', $validatedRequest['pi_id']);
-
-        unset($validatedRequest['pi_id']);
-        $validatedRequest['sensor_system_id'] = $sensorSystem['id'];
+        $validatedRequest['sensor_system_id'] = $sensorSystem->id;
+        $validatedRequest['uv'] = 0.0;
+        $validatedRequest['last_updated'] = Carbon::now()->toDateTimeString();
 
         APIData::create($validatedRequest);
 
-        return response(201);
+        return redirect()->route('SensorSystems.index');
     }
 
-    /* API data can not be edited
-     * in app. Instead they are updated
-     * using the API, which is triggered
-     * based on MQTT messages.
+    /* Deletes a API data.
      */
-
-    /* Updates a API data with the
-     * newly provided info. This data is
-     * recieved through the API.
-     */
-    public function update(Request $request)
+    public function delete(SensorSystem $APIData)
     {
-        $validatedRequest = $this->validateAPIData($request);
-        $sensorSystem = SensorSystem::firstWhere('pi_id', $validatedRequest['pi_id']);
+        APIData::destroy($APIData->id);
 
-        unset($validatedRequest['pi_id']);
-
-        $APIData = APIData::firstWhere('sensor_system_id', $sensorSystem['id']);
-
-        $APIData->update($validatedRequest);
-
-        return response(201);
+        return redirect()->route('SensorSystems.index');
     }
 
     public function validateAPIData(Request $request)
     {
         return $request->validate([
-            'pi_id' => 'required',
-            'uv' => 'required|numeric',
-            'last_updated' => 'required',
+            'sensor_system_id' => 'required',
         ]);
     }
 }
